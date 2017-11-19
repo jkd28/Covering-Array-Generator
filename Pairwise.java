@@ -3,6 +3,31 @@
  * @author John Dott.
  */
 public class Pairwise {
+    /** Returns an exhaustive truth table for the number of parameters in the given list
+       The generated truth table is stored with rows|cols ordering of the parameters
+     @param n    The number of relations for which to generate a truth table
+     @return     A 2-D boolean array which is a full truth table for n-parameters
+    */
+    public static boolean[][] getTruthTable(int n) {
+        if (n <= 0) {
+            return null;
+        }
+        int numRows = (int)Math.pow((double)2,(double)n);
+        boolean[][] truthTable = new boolean[numRows][n];
+
+        int count = 0;
+        for (int row = numRows - 1; row >= 0; row--) {
+            for (int col = n - 1; col >= 0 ; col--) {
+                boolean value = (row / (int)Math.pow(2, col)) % 2 == 0;
+                System.out.print(value  + "\t");
+                truthTable[row][col] = value;
+            }
+            System.out.println();
+        }
+        return truthTable;
+    }
+
+
     /** Returns a list of strings, each of which has been truncated to a length of
         10 characters.
      @param toTruncate  A list of strings to be truncated
@@ -50,5 +75,8 @@ public class Pairwise {
             System.out.println("An internal error occured. Exiting...");
             System.exit(1);
         }
+
+        // Generate the full truth table for the number of parameters we are given
+        boolean[][] truthTable = getTruthTable(params.length);
     }
 }

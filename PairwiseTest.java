@@ -61,4 +61,17 @@ public class PairwiseTest {
         String[] returned = Pairwise.truncate(null);
         assertEquals(0, returned.length);
     }
+
+    @Test
+    public void testTruthTableGeneratorNull(){
+        assertNull(Pairwise.getTruthTable(0));
+        assertNull(Pairwise.getTruthTable(-3));
+    }
+
+    @Test
+    public void testTruthTableGenerator(){
+        boolean[][] truth = Pairwise.getTruthTable(2);
+        // Test some location againts the formula for truthTable value generation
+        assertEquals(truth[2][1], (2 / (int)Math.pow(2, 1)) % 2 == 0);
+    }
 }
