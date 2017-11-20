@@ -1,8 +1,74 @@
 /**
  * Description
  * @author John Dott.
- */
+*/
+
+import java.util.ArrayList;
+
 public class Pairwise {
+    /** Adds the covering row for the given pairing of parameters to the Covering Row list.  If the
+        row is already present in the list, nothing is added.
+
+    @param param1           The number of the first column (parameter) to compare
+    @param param2           The number of the second column (parameter) to compare
+    @param truthTable       Truth table for the number of parameters provided to the program
+    @param coveringArray    Current covering array to which the new row will be added
+
+    @return             The covering array with added covering row
+    */
+    private static ArrayList<boolean[]> addCoveringRow(int param1, int param2,
+                                                        boolean[][] truthTable,
+                                                        ArrayList<boolean[]> coveringArray) {
+        // Enumerate all possible pairwise combinations for comparison
+        boolean[][] comparisons = {{false, false}, {false, true}, {true, false}, {true, true}};
+
+        // Check the covering array for a match first
+        for (boolean[] comparison : comparisons) {
+            boolean check1 = comparison[0];
+            boolean check2 = comparison[1];
+
+            boolean matchFoundInCoveringArray = false;
+            for (boolean[] row : coveringArray) {
+                if ((check1 == row[param1]) && (check2 == row[param2])) {
+                    // There is a match in the covering array
+                    matchFoundInCoveringArray = true;
+                    break;
+                }
+            }
+
+            if (!matchFoundInCoveringArray) {
+                // We need to search the truth table for a covering row
+                for (boolean[] row : truthTable) {
+                    if ((check1 == row[param1]) && (check2 == row[param2])) {
+                        coveringArray.add(row);
+                        break;
+                    }
+                }
+            }
+        }
+        return coveringArray;
+    }
+
+    /** Returns the collection of rows that allows for each pairwise combination of parameters to
+        be tested.
+
+    @param truthTable   A full truth table for the number of parameters provided to the program
+    @return             The rows which comprise a covering array for all pairwise combinations of parameters
+    */
+    public static ArrayList<boolean[]> getCoveringArray(boolean[][] truthTable) {
+        int numColumns = truthTable[0].length;
+
+        ArrayList<boolean[]> coveringArray = new ArrayList<boolean[]>();
+        // Find all possible pairwise combinations of paramters (columns)
+        for (int currentColumn = 0; currentColumn < numColumns; currentColumn++) {
+            for (int pairing = currentColumn + 1; pairing < numColumns; pairing++) {
+                coveringArray = addCoveringRow(currentColumn, pairing, truthTable, coveringArray);
+            }
+        }
+        return coveringArray;
+    }
+
+
     /** Returns an exhaustive truth table for the number of parameters in the given list
        The generated truth table is stored with rows|cols ordering of the parameters
      @param n    The number of relations for which to generate a truth table
@@ -16,13 +82,11 @@ public class Pairwise {
         boolean[][] truthTable = new boolean[numRows][n];
 
         int count = 0;
-        for (int row = numRows - 1; row >= 0; row--) {
-            for (int col = n - 1; col >= 0 ; col--) {
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < n; col++) {
                 boolean value = (row / (int)Math.pow(2, col)) % 2 == 0;
-                System.out.print(value  + "\t");
                 truthTable[row][col] = value;
             }
-            System.out.println();
         }
         return truthTable;
     }
@@ -65,7 +129,7 @@ public class Pairwise {
     */
     public static void main(String[] args) {
         if (!validInput(args)) {
-            System.out.println("USAGE: java Pairwise <list of 2 or more parameters>");
+            System.out.println("Please enter at least 2 parameters!");
             System.exit(1);
         }
 
@@ -78,5 +142,32 @@ public class Pairwise {
 
         // Generate the full truth table for the number of parameters we are given
         boolean[][] truthTable = getTruthTable(params.length);
+
+        //Print the truth table, PROBABLY JUST FOR DEBUGGING
+        System.out.println("Truth Table");
+        for (String param : params) {
+            System.out.print(param + "\t");
+        }
+
+        System.out.println();
+
+        for (int row = truthTable.length - 1; row >= 0; row--) {
+            for (int col = truthTable[0].length - 1; col >= 0 ; col--) {
+                boolean value = (row / (int)Math.pow(2, col)) % 2 == 0;
+                System.out.print(value  + "\t");
+            }
+            System.out.println();
+        }
+
+        System.out.println("\nCovering Array: ");
+        // Find the covering array
+        ArrayList<boolean[]> coveringArrayRows = getCoveringArray(truthTable);
+
+        for (boolean[] row : coveringArrayRows) {
+            for (int i = 0; i < row.length; i++) {
+                System.out.print(row[i] + "\t");
+            }
+            System.out.println();
+        }
     }
 }
