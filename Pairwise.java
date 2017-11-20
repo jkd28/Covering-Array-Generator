@@ -13,6 +13,9 @@ public class Pairwise {
     @return                 The pretty, formatted string form of the covering array
     */
     public static String getFormattedCoveringArray(ArrayList<boolean[]> coveringArray, String[] params) {
+        if ((coveringArray.size() == 0) || (params.length == 0)) {
+            return "";
+        }
         // First, build the parameter line
         StringBuilder arrayToString = new StringBuilder("");
         for (String parameter : params) {

@@ -181,6 +181,38 @@ public class PairwiseTest {
         String[] emptyParameters = {};
 
         String returned = Pairwise.getFormattedCoveringArray(emptyCovering, emptyParameters);
-        assertEquals("\n", returned);
+        assertEquals("", returned);
+    }
+
+    /*
+    Test that an empty string is returned if an empty covering array is passed to
+    the format string function
+    */
+    @Test
+    public void testFormatEmptyCovering(){
+        ArrayList<boolean[]> emptyCovering = new ArrayList<boolean[]>();
+        String[] someParameters = {"Some", "parameters"};
+
+        String returned = Pairwise.getFormattedCoveringArray(emptyCovering, someParameters);
+        assertEquals("", returned);
+    }
+
+    /*
+    Test that an empty string is returned if an empty parameter array is passed to
+    the format string function
+    */
+    @Test
+    public void testFormatEmptyParameters(){
+        boolean[][] coverNative = {{false, false}, {false, true}, {true, false}, {true, true}};
+        ArrayList<boolean[]> covering = new ArrayList<boolean[]>();
+        covering.add(coverNative[0]);
+        covering.add(coverNative[1]);
+        covering.add(coverNative[2]);
+        covering.add(coverNative[3]);
+
+        String[] emptyParameters = {};
+        
+        String returned = Pairwise.getFormattedCoveringArray(covering, emptyParameters);
+        assertEquals("", returned);
     }
 }
