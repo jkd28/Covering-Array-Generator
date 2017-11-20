@@ -6,8 +6,40 @@
 import java.util.ArrayList;
 
 public class Pairwise {
-    /** Adds the covering row for the given pairing of parameters to the Covering Row list.  If the
-        row is already present in the list, nothing is added.
+    /** Generates the output string from the Covering Array provided
+    @param coveringArray    The covering array for a given set of inputs
+    @param params           The name of the inputs for use in output formatting
+
+    @return                 The pretty, formatted string form of the covering array
+    */
+    public static String getFormattedCoveringArray(ArrayList<boolean[]> coveringArray, String[] params) {
+        // First, build the parameter line
+        StringBuilder arrayToString = new StringBuilder("");
+        for (String parameter : params) {
+            arrayToString.append(parameter);
+            arrayToString.append("\t");
+        }
+
+        arrayToString.append("\n");
+
+        // Now build the actual covering array output
+        for (boolean[] row : coveringArray) {
+            for (int i = 0; i < row.length; i++) {
+                int boolVal = row[i] ? 1 : 0;
+
+                StringBuilder rowString = new StringBuilder();
+                rowString.append(boolVal);
+                rowString.append("\t");
+
+                arrayToString.append(rowString);
+            }
+            arrayToString.append("\n");
+        }
+        return arrayToString.toString();
+    }
+
+    /** This helper method adds the covering row for the given pairing of parameters to the Covering Row list.
+        If the row is already present in the list, nothing is added.
 
     @param param1           The number of the first column (parameter) to compare
     @param param2           The number of the second column (parameter) to compare
@@ -51,8 +83,8 @@ public class Pairwise {
 
     /** Returns the collection of rows that allows for each pairwise combination of parameters to
         be tested.
-
     @param truthTable   A full truth table for the number of parameters provided to the program
+
     @return             The rows which comprise a covering array for all pairwise combinations of parameters
     */
     public static ArrayList<boolean[]> getCoveringArray(boolean[][] truthTable) {
@@ -72,6 +104,7 @@ public class Pairwise {
     /** Returns an exhaustive truth table for the number of parameters in the given list
        The generated truth table is stored with rows|cols ordering of the parameters
      @param n    The number of relations for which to generate a truth table
+
      @return     A 2-D boolean array which is a full truth table for n-parameters
     */
     public static boolean[][] getTruthTable(int n) {
@@ -95,6 +128,7 @@ public class Pairwise {
     /** Returns a list of strings, each of which has been truncated to a length of
         10 characters.
      @param toTruncate  A list of strings to be truncated
+
      @return            A list of truncated strings, no longer than 10 characters each
     */
     public static String[] truncate(String[] toTruncate) {
@@ -114,6 +148,7 @@ public class Pairwise {
     /** Returns a boolean signifying whether or not the arguments
         list is at least 2 inputs
      @param arguments The string of arguments
+
      @return          The validation status of the input arguments
     */
     public static boolean validInput(String[] arguments) {
@@ -143,31 +178,10 @@ public class Pairwise {
         // Generate the full truth table for the number of parameters we are given
         boolean[][] truthTable = getTruthTable(params.length);
 
-        //Print the truth table, PROBABLY JUST FOR DEBUGGING
-        System.out.println("Truth Table");
-        for (String param : params) {
-            System.out.print(param + "\t");
-        }
-
-        System.out.println();
-
-        for (int row = truthTable.length - 1; row >= 0; row--) {
-            for (int col = truthTable[0].length - 1; col >= 0 ; col--) {
-                boolean value = (row / (int)Math.pow(2, col)) % 2 == 0;
-                System.out.print(value  + "\t");
-            }
-            System.out.println();
-        }
-
-        System.out.println("\nCovering Array: ");
         // Find the covering array
         ArrayList<boolean[]> coveringArrayRows = getCoveringArray(truthTable);
 
-        for (boolean[] row : coveringArrayRows) {
-            for (int i = 0; i < row.length; i++) {
-                System.out.print(row[i] + "\t");
-            }
-            System.out.println();
-        }
+        String output = getFormattedCoveringArray(coveringArrayRows, params);
+        System.out.println(output);
     }
 }
