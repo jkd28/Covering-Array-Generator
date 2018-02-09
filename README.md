@@ -12,6 +12,18 @@ Compile:
 Run:  
 `java Pairwise <2 or more strings>`
 
+Example Output:
+```
+java Pairwise Cows Chicks Horses 
+Cows	Chicks	Horses
+0	0	1
+0	1	1
+1	0	1
+1	1	1
+0	1	0
+1	1	0
+1	0	0
+```
 ## Tests
 I have written Unit Tests for this program.  
 To run the tests:    
