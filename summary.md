@@ -1,6 +1,0 @@
-# Summary
-I started this project by first running both `FindBugs` and `Checkstyle` on some of my previous assignments.  This allowed me to get a good feel for the types of issues that the two tools would identify with a lot of my coding practices.  Thankfully, there were not many issues that weren't easily resolved simply by focusing a bit more on my style and coding practices.  
-
-The major issue I ran into was with `Checkstyle`.  I was not aware we were required to write JavaDoc comments in order to meet the standards.  This was not a huge setback, as it didn't affect the code itself, only the way I commented things.  This was an easy issue to resolve, simply because I just needed to add some more detailed description to each new method I created.  Otherwise, I would occasionally forget to space things out, like `for` and `{` that began the methods.
-
-As I worked on the project, I was particularly mindful of my coding practices so that I wouldn't have too much to worry about when I used `FindBugs`.  I also ran `FindBugs` every time that I implemented new code, which kept me on course and minimized the issues I ran into.  The only time I actually ran into any "bugs" that were not "Dead Local Stores" was when I had string concatenation with the `+` operator in a loop.  I remedied this bug by switching to `StringBuilder`.
